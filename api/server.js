@@ -111,8 +111,8 @@ app.post('/api/rsvp', submissionLimiter, async (req, res) => {
   if (!['si', 'no'].includes(asistencia)) {
     return res.status(422).json({ ok: false, message: 'Selecciona una respuesta de asistencia.' });
   }
-  if (!Number.isInteger(personas) || (asistencia === 'si' && (personas < 1 || personas > 10)) || (asistencia === 'no' && personas !== 0)) {
-    return res.status(422).json({ ok: false, message: 'La cantidad de personas no es válida.' });
+  if (!Number.isInteger(personas) || (asistencia === 'si' && (personas !== 1)) || (asistencia === 'no' && personas !== 0)) {
+    return res.status(422).json({ ok: false, message: 'Cada confirmación corresponde a una sola persona.' });
   }
   if (mensaje.length > 500 || /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(mensaje)) {
     return res.status(422).json({ ok: false, message: 'El mensaje no puede exceder 500 caracteres.' });
