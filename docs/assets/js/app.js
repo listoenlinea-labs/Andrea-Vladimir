@@ -9,11 +9,136 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let introClosed = false;
 
+  // A guided reading experience: guests may pause, skip, or scroll at any time.
+  const tour = one('#guided-tour');
+  const tourToggle = one('#tour-toggle');
+  const tourNext = one('#tour-next');
+  const tourClose = one('#tour-close');
+  const tourName = one('#tour-name');
+  const tourChapter = one('#tour-chapter');
+  const tourProgress = one('#tour-progress-fill');
+  const chapters = [
+    { selector: '.hero', name: 'El inicio de nuestra historia', duration: 6500 },
+    { selector: '#mensaje', name: 'Una invitación del corazón', duration: 6700 },
+    { selector: '.countdown-section', name: 'Cada día, más cerca', duration: 6600 },
+    { selector: '#historia', name: 'Nuestra historia favorita', duration: 10500 },
+    { selector: '.verse-section', name: 'Dos caminos, un destino', duration: 6500 },
+    { selector: '#detalles', name: 'El día que diremos sí', duration: 10000 },
+    { selector: '.timeline-section', name: 'Los momentos que compartiremos', duration: 9600 },
+    { selector: '.dress-section', name: 'Un detalle para nuestros invitados', duration: 7500 },
+    { selector: '#confirmar', name: 'Confirma tu asistencia', duration: 0 }
+  ];
+  let tourIndex = 0;
+  let tourPlaying = false;
+  let tourDismissed = false;
+  let tourElapsed = 0;
+  let tourStartedAt = 0;
+  let tourFrame = 0;
+  let tourTravelTimer = 0;
+
+  function updateTourControls() {
+    if (!tour) return;
+    tourChapter.textContent = `CAPÍTULO ${String(tourIndex + 1).padStart(2, '0')} / ${String(chapters.length).padStart(2, '0')}`;
+    tourName.textContent = chapters[tourIndex].name;
+    tourToggle.textContent = tourPlaying ? 'Ⅱ' : '▶';
+    tourToggle.setAttribute('aria-label', tourPlaying ? 'Pausar recorrido' : 'Reanudar recorrido');
+    tourToggle.title = tourPlaying ? 'Pausar recorrido' : 'Reanudar recorrido';
+    const total = chapters[tourIndex].duration || 1;
+    tourProgress.style.width = `${Math.min(100, (tourElapsed / total) * 100)}%`;
+  }
+
+  function clearTourTimers() {
+    window.cancelAnimationFrame(tourFrame);
+    window.clearTimeout(tourTravelTimer);
+    tourFrame = 0;
+    tourTravelTimer = 0;
+  }
+
+  function pauseTour() {
+    if (!tourPlaying) return;
+    if (tourStartedAt) tourElapsed += performance.now() - tourStartedAt;
+    tourStartedAt = 0;
+    tourPlaying = false;
+    clearTourTimers();
+    updateTourControls();
+  }
+
+  function goToChapter(index) {
+    if (tourDismissed || !tour) return;
+    clearTourTimers();
+    tourIndex = Math.min(index, chapters.length - 1);
+    tourElapsed = 0;
+    tourStartedAt = 0;
+    const chapter = chapters[tourIndex];
+    const target = one(chapter.selector);
+    if (target) {
+      // The offset preserves a little breathing room above the chapter title.
+      const position = Math.max(0, target.getBoundingClientRect().top + window.scrollY - 14);
+      window.scrollTo({ top: position, behavior: reducedMotion ? 'auto' : 'smooth' });
+    }
+    if (tourIndex === chapters.length - 1) {
+      tourPlaying = false;
+      tourDismissed = true;
+      tour.hidden = true;
+      return; // Never auto-scroll away from the RSVP form.
+    }
+    tourPlaying = true;
+    updateTourControls();
+    tourTravelTimer = window.setTimeout(() => {
+      tourTravelTimer = 0;
+      startTourDwell();
+    }, reducedMotion ? 0 : 1150);
+  }
+
+  function startTourDwell() {
+    if (!tourPlaying || tourDismissed) return;
+    tourStartedAt = performance.now();
+    const tick = (now) => {
+      if (!tourPlaying) return;
+      const total = chapters[tourIndex].duration;
+      const current = tourElapsed + now - tourStartedAt;
+      tourProgress.style.width = `${Math.min(100, (current / total) * 100)}%`;
+      if (current >= total) goToChapter(tourIndex + 1);
+      else tourFrame = window.requestAnimationFrame(tick);
+    };
+    tourFrame = window.requestAnimationFrame(tick);
+  }
+
+  function activateTour(autoPlay) {
+    if (!tour || tourDismissed || window.location.hash === '#confirmar') return;
+    tour.hidden = false;
+    if (autoPlay && !reducedMotion) goToChapter(0);
+    else updateTourControls(); // Skip animation and reduced motion preserve manual reading.
+  }
+
+  tourToggle?.addEventListener('click', () => {
+    if (tourPlaying) pauseTour();
+    else if (!tourDismissed) goToChapter(tourIndex);
+  });
+  tourNext?.addEventListener('click', () => goToChapter(tourIndex + 1));
+  tourClose?.addEventListener('click', () => {
+    pauseTour();
+    tourDismissed = true;
+    tour.hidden = true;
+  });
+
+  // An intentional guest gesture always takes priority over the automatic tour.
+  window.addEventListener('wheel', pauseTour, { passive: true });
+  window.addEventListener('touchstart', pauseTour, { passive: true });
+  document.addEventListener('pointerdown', (event) => {
+    if (!tour?.contains(event.target) && !intro?.contains(event.target)) pauseTour();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (['Tab', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) pauseTour();
+  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) pauseTour(); });
+
   function finishIntro(animate) {
     if (introClosed) return;
     introClosed = true;
     if (animate && !reducedMotion) intro.classList.add('is-opening');
-    const pause = animate && !reducedMotion ? 1150 : 0;
+    openButton.disabled = true;
+    const pause = animate && !reducedMotion ? 3750 : 0;
     window.setTimeout(() => {
       intro.classList.add('is-leaving');
       document.body.classList.remove('intro-active');
@@ -23,9 +148,12 @@
       window.setTimeout(() => {
         intro.hidden = true;
         intro.style.display = 'none';
-        one('#hero-title')?.setAttribute('tabindex', '-1');
-        one('#hero-title')?.focus({ preventScroll: true });
-      }, animate && !reducedMotion ? 850 : 0);
+        if (window.location.hash !== '#confirmar') {
+          one('#hero-title')?.setAttribute('tabindex', '-1');
+          one('#hero-title')?.focus({ preventScroll: true });
+        }
+        activateTour(animate);
+      }, animate && !reducedMotion ? 1000 : 0);
     }, pause);
   }
 
