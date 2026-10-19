@@ -8,7 +8,7 @@
   <meta property="og:title" content="Andrea & Vladimir · Nuestra boda">
   <meta property="og:description" content="13 de noviembre de 2027 · San Rafael Eventos. Nos encantaría celebrar contigo.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/images/andrea-vladimir-portada.webp">
+  <meta property="og:image" content="https://images.pexels.com/photos/15964939/pexels-photo-15964939.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200&amp;h=1500&amp;fit=crop">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +24,8 @@
 
   <div class="intro" id="intro" role="dialog" aria-label="Abrir invitación de boda" aria-modal="true">
     <div class="intro-glow" aria-hidden="true"></div>
+    <div class="intro-filigrana intro-filigrana-left" aria-hidden="true">❦</div>
+    <div class="intro-filigrana intro-filigrana-right" aria-hidden="true">❦</div>
     <div class="intro-copy">
       <p class="eyebrow">UNA INVITACIÓN MUY ESPECIAL</p>
       <h2>Hay historias que merecen <em>celebrarse.</em></h2>
@@ -31,15 +33,21 @@
     </div>
     <div class="envelope-stage" aria-hidden="true">
       <div class="envelope">
-        <div class="envelope-letter"><span>A <i>&amp;</i> V</span><small>13 · 11 · 2027</small></div>
+        <div class="envelope-letter">
+          <small class="letter-overline">CON TODO NUESTRO AMOR</small>
+          <span>A <i>&amp;</i> V</span>
+          <small>13 · NOVIEMBRE · 2027</small>
+          <span class="letter-rule"></span>
+        </div>
         <div class="envelope-back"></div>
         <div class="envelope-flap"></div>
         <div class="envelope-front"></div>
         <div class="wax-seal">A<span>&amp;</span>V</div>
       </div>
     </div>
-    <button id="open-invitation" class="button button-dark intro-button" type="button">Abrir nuestra invitación <span aria-hidden="true">↗</span></button>
+    <button id="open-invitation" class="button button-dark intro-button" type="button">Abrir nuestra invitación <span aria-hidden="true">✧</span></button>
     <button id="skip-intro" class="text-button" type="button">Entrar sin animación</button>
+    <p class="intro-footnote" aria-hidden="true">UN VIAJE A TRAVÉS DE NUESTRA HISTORIA</p>
   </div>
 
   <header class="site-header" id="inicio">
@@ -65,7 +73,7 @@
       </div>
       <div class="hero-visual">
         <div class="hero-photo-frame">
-          <img src="assets/images/andrea-vladimir-portada.webp" width="1122" height="1402" alt="Andrea y Vladimir sonriendo juntos bajo una instalación de luces cálidas" fetchpriority="high">
+          <img src="https://images.pexels.com/photos/15964939/pexels-photo-15964939.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200&amp;h=1500&amp;fit=crop" width="1200" height="1500" alt="Fotografía de inspiración: pareja de recién casados caminando por un jardín" fetchpriority="high" referrerpolicy="no-referrer">
           <div class="photo-shine" aria-hidden="true"></div>
         </div>
         <span class="hero-photo-caption">A lifetime of us · 2027</span>
@@ -99,7 +107,7 @@
 
     <section class="story-section" id="historia" aria-labelledby="story-title">
       <div class="story-image story-image-first reveal">
-        <img src="assets/images/andrea-vladimir-portada.webp" alt="Andrea y Vladimir felices bajo luces brillantes" loading="lazy" width="1122" height="1402">
+        <img src="https://images.pexels.com/photos/15964939/pexels-photo-15964939.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=900&amp;h=1300&amp;fit=crop" alt="Fotografía de inspiración: novios paseando entre árboles" loading="lazy" width="900" height="1300" referrerpolicy="no-referrer">
         <span class="image-number">01 / OUR STORY</span>
       </div>
       <div class="story-copy reveal">
@@ -111,8 +119,8 @@
         <span class="handwritten">With all our love</span>
       </div>
       <div class="story-image story-image-second reveal">
-        <img src="assets/images/andrea-vladimir-recuerdos.webp" alt="Andrea y Vladimir abrazados frente a un fondo floral iluminado" loading="lazy" width="1122" height="1402">
-        <span class="image-number">02 / FOREVER TOGETHER</span>
+        <img src="https://images.pexels.com/photos/3916017/pexels-photo-3916017.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=900&amp;h=1200&amp;fit=crop" alt="Fotografía de inspiración: flores y accesorios de boda de estilo vintage" loading="lazy" width="900" height="1200" referrerpolicy="no-referrer">
+        <span class="image-number">02 / LITTLE DETAILS</span>
       </div>
     </section>
 
@@ -207,6 +215,21 @@
       </div>
     </section>
   </main>
+
+  <aside class="guided-tour" id="guided-tour" aria-label="Recorrido guiado por la invitación" hidden>
+    <div class="tour-progress" aria-hidden="true"><span id="tour-progress-fill"></span></div>
+    <div class="tour-content">
+      <div class="tour-description">
+        <span class="tour-overline" id="tour-chapter">CAPÍTULO 01 / 09</span>
+        <span class="tour-name" id="tour-name">El inicio de nuestra historia</span>
+      </div>
+      <div class="tour-controls">
+        <button class="tour-control" id="tour-toggle" type="button" aria-label="Pausar recorrido" title="Pausar recorrido">Ⅱ</button>
+        <button class="tour-control" id="tour-next" type="button" aria-label="Siguiente capítulo" title="Siguiente capítulo">→</button>
+        <button class="tour-control tour-close" id="tour-close" type="button" aria-label="Cerrar recorrido guiado" title="Cerrar recorrido">×</button>
+      </div>
+    </div>
+  </aside>
 
   <footer class="site-footer">
     <p class="footer-script">Love, always</p>
