@@ -52,7 +52,8 @@ app.use(helmet({
       scriptSrc: ["'self'", "'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-      imgSrc: ["'self'", 'data:'],
+      // Fotografías editoriales temporales (Pexels); no se publican fotos privadas.
+      imgSrc: ["'self'", 'data:', 'https://images.pexels.com'],
       connectSrc: ["'self'", 'https://invitaciones.listoenlinea.host'],
       objectSrc: ["'none'"],
       frameAncestors: ["'none'"]
