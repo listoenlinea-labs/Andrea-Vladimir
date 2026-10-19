@@ -26,9 +26,11 @@
     { selector: '#detalles', name: 'El día que diremos sí', duration: 10000 },
     { selector: '.timeline-section', name: 'Los momentos que compartiremos', duration: 9600 },
     { selector: '.dress-section', name: 'Un detalle para nuestros invitados', duration: 7500 },
-    { selector: '#confirmar', name: 'Confirma tu asistencia', duration: 0 }
+    { selector: '#confirmar', name: 'Confirma tu asistencia', duration: 6500 }
   ];
   let tourIndex = 0;
+  let tourStopIndex = 0;
+  let tourStops = [];
   let tourPlaying = false;
   let tourDismissed = false;
   let tourElapsed = 0;
@@ -38,7 +40,8 @@
 
   function updateTourControls() {
     if (!tour) return;
-    tourChapter.textContent = `CAPÍTULO ${String(tourIndex + 1).padStart(2, '0')} / ${String(chapters.length).padStart(2, '0')}`;
+    const part = tourStops.length > 1 ? ` · PARTE ${tourStopIndex + 1}/${tourStops.length}` : '';
+    tourChapter.textContent = `CAPÍTULO ${String(tourIndex + 1).padStart(2, '0')} / ${String(chapters.length).padStart(2, '0')}${part}`;
     tourName.textContent = chapters[tourIndex].name;
     tourToggle.textContent = tourPlaying ? 'Ⅱ' : '▶';
     tourToggle.setAttribute('aria-label', tourPlaying ? 'Pausar recorrido' : 'Reanudar recorrido');
@@ -63,31 +66,64 @@
     updateTourControls();
   }
 
-  function goToChapter(index) {
-    if (tourDismissed || !tour) return;
+  // Each chapter begins exactly at its own color boundary. If content is taller
+  // than the viewport, additional camera stops reveal it without manual scroll.
+  function chapterStops(index) {
+    const section = one(chapters[index].selector);
+    if (!section) return [0];
+    const top = Math.max(0, Math.round(section.getBoundingClientRect().top + window.scrollY));
+    const viewport = window.innerHeight;
+    const sectionHeight = section.getBoundingClientRect().height;
+    const excess = Math.max(0, Math.ceil(sectionHeight - viewport));
+
+    if (index === chapters.length - 1) {
+      // RSVP is interactive: show the invitation, then settle on the first
+      // field and never slide away while someone is answering.
+      const firstField = one('#guest-name');
+      if (!firstField || excess < 100) return [top];
+      const formTop = Math.max(top, Math.round(firstField.getBoundingClientRect().top + window.scrollY - 115));
+      return formTop - top > 90 ? [top, formTop] : [top];
+    }
+
+    if (excess < 75) return [top];
+    const sections = Math.ceil(excess / Math.max(320, viewport * .7));
+    return Array.from({ length: sections + 1 }, (_item, part) => top + Math.round(excess * part / sections));
+  }
+
+  function goToStop(index) {
     clearTourTimers();
-    tourIndex = Math.min(index, chapters.length - 1);
+    tourStopIndex = index;
     tourElapsed = 0;
     tourStartedAt = 0;
-    const chapter = chapters[tourIndex];
-    const target = one(chapter.selector);
-    if (target) {
-      // The offset preserves a little breathing room above the chapter title.
-      const position = Math.max(0, target.getBoundingClientRect().top + window.scrollY - 14);
-      window.scrollTo({ top: position, behavior: reducedMotion ? 'auto' : 'smooth' });
-    }
-    if (tourIndex === chapters.length - 1) {
+    const destination = tourStops[tourStopIndex];
+    const distance = Math.abs(window.scrollY - destination);
+    window.scrollTo({ top: destination, behavior: reducedMotion ? 'auto' : 'smooth' });
+
+    // Finish at the form (not beyond it), leaving complete control to guests.
+    if (tourIndex === chapters.length - 1 && tourStopIndex === tourStops.length - 1) {
       tourPlaying = false;
       tourDismissed = true;
       tour.hidden = true;
-      return; // Never auto-scroll away from the RSVP form.
+      return;
     }
     tourPlaying = true;
     updateTourControls();
     tourTravelTimer = window.setTimeout(() => {
       tourTravelTimer = 0;
       startTourDwell();
-    }, reducedMotion ? 0 : 1150);
+    }, reducedMotion ? 0 : Math.min(1700, Math.max(900, distance * .33)));
+  }
+
+  function goToChapter(index) {
+    if (tourDismissed || !tour) return;
+    tourIndex = Math.min(index, chapters.length - 1);
+    tourStops = chapterStops(tourIndex);
+    goToStop(0);
+  }
+
+  function advanceTour() {
+    if (tourStopIndex + 1 < tourStops.length) goToStop(tourStopIndex + 1);
+    else goToChapter(tourIndex + 1);
   }
 
   function startTourDwell() {
@@ -98,7 +134,7 @@
       const total = chapters[tourIndex].duration;
       const current = tourElapsed + now - tourStartedAt;
       tourProgress.style.width = `${Math.min(100, (current / total) * 100)}%`;
-      if (current >= total) goToChapter(tourIndex + 1);
+      if (current >= total) advanceTour();
       else tourFrame = window.requestAnimationFrame(tick);
     };
     tourFrame = window.requestAnimationFrame(tick);
@@ -113,9 +149,15 @@
 
   tourToggle?.addEventListener('click', () => {
     if (tourPlaying) pauseTour();
-    else if (!tourDismissed) goToChapter(tourIndex);
+    else if (!tourDismissed) {
+      if (!tourStops.length) goToChapter(tourIndex);
+      else goToStop(tourStopIndex);
+    }
   });
-  tourNext?.addEventListener('click', () => goToChapter(tourIndex + 1));
+  tourNext?.addEventListener('click', () => {
+    if (!tourStops.length) goToChapter(tourIndex + 1);
+    else advanceTour();
+  });
   tourClose?.addEventListener('click', () => {
     pauseTour();
     tourDismissed = true;
