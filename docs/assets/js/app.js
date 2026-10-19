@@ -12,11 +12,7 @@
   // A guided reading experience: guests may pause, skip, or scroll at any time.
   const tour = one('#guided-tour');
   const tourToggle = one('#tour-toggle');
-  const tourNext = one('#tour-next');
-  const tourClose = one('#tour-close');
-  const tourName = one('#tour-name');
-  const tourChapter = one('#tour-chapter');
-  const tourProgress = one('#tour-progress-fill');
+  const tourStatus = one('#tour-status');
   const chapters = [
     { selector: '.hero', name: 'El inicio de nuestra historia', duration: 6500 },
     { selector: '#mensaje', name: 'Una invitación del corazón', duration: 6700 },
@@ -41,13 +37,12 @@
   function updateTourControls() {
     if (!tour) return;
     const part = tourStops.length > 1 ? ` · PARTE ${tourStopIndex + 1}/${tourStops.length}` : '';
-    tourChapter.textContent = `CAPÍTULO ${String(tourIndex + 1).padStart(2, '0')} / ${String(chapters.length).padStart(2, '0')}${part}`;
-    tourName.textContent = chapters[tourIndex].name;
-    tourToggle.textContent = tourPlaying ? 'Ⅱ' : '▶';
+    tourToggle.classList.toggle('is-paused', !tourPlaying);
+    if (tourStatus) tourStatus.textContent = tourPlaying ? 'NOV' : 'PAUSA';
     tourToggle.setAttribute('aria-label', tourPlaying ? 'Pausar recorrido' : 'Reanudar recorrido');
     tourToggle.title = tourPlaying ? 'Pausar recorrido' : 'Reanudar recorrido';
     const total = chapters[tourIndex].duration || 1;
-    tourProgress.style.width = `${Math.min(100, (tourElapsed / total) * 100)}%`;
+    tourToggle.style.setProperty('--tour-progress', `${Math.min(100, (tourElapsed / total) * 100)}%`);
   }
 
   function clearTourTimers() {
@@ -133,7 +128,7 @@
       if (!tourPlaying) return;
       const total = chapters[tourIndex].duration;
       const current = tourElapsed + now - tourStartedAt;
-      tourProgress.style.width = `${Math.min(100, (current / total) * 100)}%`;
+      tourToggle.style.setProperty('--tour-progress', `${Math.min(100, (current / total) * 100)}%`);
       if (current >= total) advanceTour();
       else tourFrame = window.requestAnimationFrame(tick);
     };
@@ -153,15 +148,6 @@
       if (!tourStops.length) goToChapter(tourIndex);
       else goToStop(tourStopIndex);
     }
-  });
-  tourNext?.addEventListener('click', () => {
-    if (!tourStops.length) goToChapter(tourIndex + 1);
-    else advanceTour();
-  });
-  tourClose?.addEventListener('click', () => {
-    pauseTour();
-    tourDismissed = true;
-    tour.hidden = true;
   });
 
   // An intentional guest gesture always takes priority over the automatic tour.
@@ -275,19 +261,9 @@
   const form = one('#rsvp-form');
   if (!form) return;
   const attendanceInputs = form.querySelectorAll('input[name="asistencia"]');
-  const countField = one('#guests-count-field');
-  const countSelect = one('#guests-count');
   const submitButton = one('#submit-rsvp');
   const statusNode = one('#form-status');
 
-  function updateAttendance() {
-    const canAttend = form.querySelector('input[name="asistencia"]:checked')?.value === 'si';
-    countField.hidden = !canAttend;
-    countField.style.display = canAttend ? '' : 'none';
-    countSelect.disabled = !canAttend;
-  }
-  attendanceInputs.forEach((radio) => radio.addEventListener('change', updateAttendance));
-  updateAttendance();
 
   function showStatus(message, type) {
     statusNode.hidden = false;
@@ -303,7 +279,7 @@
     const nombre = String(one('#guest-name').value || '').trim().replace(/\s+/g, ' ');
     const telefono = String(one('#guest-phone').value || '').replace(/\D/g, '').replace(/^52(?=\d{10}$)/, '');
     const asistencia = form.querySelector('input[name="asistencia"]:checked')?.value;
-    const personas = asistencia === 'si' ? Number(countSelect.value) : 0;
+    const personas = asistencia === 'si' ? 1 : 0;
     const mensaje = String(one('#guest-message').value || '').trim();
     const website = String(one('#guest-website').value || '');
     const consentimiento = Boolean(one('#privacy-consent').checked);
@@ -311,7 +287,6 @@
     if (nombre.length < 3 || nombre.length > 120) return showStatus('Escribe tu nombre completo (de 3 a 120 caracteres).', 'error');
     if (!/^\d{10}$/.test(telefono)) return showStatus('Escribe un número de WhatsApp de 10 dígitos.', 'error');
     if (!['si', 'no'].includes(asistencia)) return showStatus('Selecciona si podrás acompañarnos.', 'error');
-    if (asistencia === 'si' && (!Number.isInteger(personas) || personas < 1 || personas > 10)) return showStatus('Selecciona una cantidad válida de personas.', 'error');
     if (!consentimiento) return showStatus('Necesitamos tu consentimiento para guardar la confirmación.', 'error');
     if (!config.apiBaseUrl || !/^https?:\/\//i.test(config.apiBaseUrl)) {
       return showStatus('El registro todavía no está conectado. Andrea y Vladimir habilitarán la confirmación en línea muy pronto.', 'error');
@@ -331,10 +306,9 @@
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data.ok) throw new Error(data.message || 'No se pudo guardar tu respuesta. Inténtalo de nuevo.');
       showStatus(asistencia === 'si'
-        ? `¡Gracias, ${nombre.split(' ')[0]}! Guardamos tu confirmación para ${personas} ${personas === 1 ? 'persona' : 'personas'}. ¡Nos emociona verte!`
+        ? `¡Gracias, ${nombre.split(' ')[0]}! Guardamos tu confirmación para 1 persona. ¡Nos emociona verte!`
         : `Gracias por avisarnos, ${nombre.split(' ')[0]}. Guardamos tu respuesta y te mandamos un abrazo.`, 'success');
       form.reset();
-      updateAttendance();
     } catch (error) {
       const message = error.name === 'AbortError'
         ? 'El servidor tardó demasiado en responder. Revisa tu conexión e inténtalo de nuevo.'

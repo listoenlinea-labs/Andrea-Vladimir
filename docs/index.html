@@ -214,7 +214,7 @@
           <div class="form-field"><label for="guest-name">Tu nombre completo <span>*</span></label><input id="guest-name" name="nombre" type="text" autocomplete="name" required maxlength="120" placeholder="Nombre y apellido"></div>
           <div class="form-field"><label for="guest-phone">Tu WhatsApp <span>*</span></label><div class="phone-field"><span>+52</span><input id="guest-phone" name="telefono" type="tel" inputmode="tel" autocomplete="tel-national" required maxlength="16" placeholder="10 dígitos"></div></div>
           <fieldset class="attendance-fieldset"><legend>¿Podrás acompañarnos? <span>*</span></legend><div class="attendance-options"><label class="attendance-option"><input type="radio" name="asistencia" value="si" checked><span>Sí, ¡ahí estaré! <i>♡</i></span></label><label class="attendance-option"><input type="radio" name="asistencia" value="no"><span>No podré asistir <i>↗</i></span></label></div></fieldset>
-          <div class="form-field" id="guests-count-field"><label for="guests-count">Personas que asistirán (incluyéndote) <span>*</span></label><select id="guests-count" name="personas" required><option value="1">1 persona</option><option value="2">2 personas</option><option value="3">3 personas</option><option value="4">4 personas</option><option value="5">5 personas</option><option value="6">6 personas</option><option value="7">7 personas</option><option value="8">8 personas</option><option value="9">9 personas</option><option value="10">10 personas</option></select></div>
+          
           <div class="form-field"><label for="guest-message">Un mensaje para nosotros <small>(opcional)</small></label><textarea id="guest-message" name="mensaje" maxlength="500" rows="3" placeholder="Nos encantará leerte..."></textarea></div>
           <div class="honeypot" aria-hidden="true"><label for="guest-website">Sitio web</label><input id="guest-website" name="website" tabindex="-1" autocomplete="off"></div>
           <label class="privacy-check"><input id="privacy-consent" type="checkbox" required> <span>Acepto compartir mis datos únicamente para organizar esta celebración y gestionar mi confirmación.</span></label>
@@ -226,20 +226,11 @@
     </section>
   </main>
 
-  <aside class="guided-tour" id="guided-tour" aria-label="Recorrido guiado por la invitación" hidden>
-    <div class="tour-progress" aria-hidden="true"><span id="tour-progress-fill"></span></div>
-    <div class="tour-content">
-      <div class="tour-description">
-        <span class="tour-overline" id="tour-chapter">CAPÍTULO 01 / 09</span>
-        <span class="tour-name" id="tour-name">El inicio de nuestra historia</span>
-      </div>
-      <div class="tour-controls">
-        <button class="tour-control" id="tour-toggle" type="button" aria-label="Pausar recorrido" title="Pausar recorrido">Ⅱ</button>
-        <button class="tour-control" id="tour-next" type="button" aria-label="Siguiente capítulo" title="Siguiente capítulo">→</button>
-        <button class="tour-control tour-close" id="tour-close" type="button" aria-label="Cerrar recorrido guiado" title="Cerrar recorrido">×</button>
-      </div>
-    </div>
-  </aside>
+  <aside class="guided-tour" id="guided-tour" aria-label="Progreso del recorrido" hidden>
+  <button class="tour-disc" id="tour-toggle" type="button" aria-label="Pausar recorrido automático" title="Toca para pausar o continuar">
+    <span class="tour-disc-date">13</span><span class="tour-disc-status" id="tour-status">NOV</span>
+  </button>
+</aside>
 
   <footer class="site-footer">
     <p class="footer-script">Love, always</p>

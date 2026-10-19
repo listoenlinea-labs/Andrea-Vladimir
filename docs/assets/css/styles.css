@@ -312,3 +312,113 @@ h2 em{font-family:var(--script);font-weight:400;font-style:normal;color:var(--go
   .rsvp-section{padding:60px 13px 88px}
 }
 @media(prefers-reduced-motion:reduce){.petal-drift{display:none}}
+
+/* Mobile-first editorial composition and unobtrusive circular story timer. */
+.guided-tour{right:18px;bottom:18px;width:64px;height:64px;padding:0;border:0;border-radius:50%;background:transparent;box-shadow:none;backdrop-filter:none;animation:tour-arrive .5s ease both}
+.tour-progress,.tour-content,.tour-description,.tour-controls{display:none}
+.tour-disc{display:grid;place-content:center;position:relative;width:62px;height:62px;border:0;border-radius:50%;color:#595c50;background:conic-gradient(from -90deg,#aa9777 var(--tour-progress,0%),#dfd8ca77 0);box-shadow:0 3px 14px #4c49301b;cursor:pointer}
+.tour-disc::before{content:'';position:absolute;inset:3px;border-radius:50%;background:#faf8f0d9;backdrop-filter:blur(5px)}
+.tour-disc-date,.tour-disc-status{z-index:1;position:relative;text-align:center;line-height:1}
+.tour-disc-date{font:400 24px/1 var(--serif)}
+.tour-disc-status{font:500 7px/1.5 var(--sans);letter-spacing:.13em}
+.tour-disc.is-paused .tour-disc-status{color:#927e64}
+@media(max-width:999px){
+  .guided-tour{right:10px;bottom:calc(10px + env(safe-area-inset-bottom));width:53px;height:53px}
+  .tour-disc{width:52px;height:52px}
+  .tour-disc-date{font-size:20px}
+  .tour-disc-status{font-size:6px}
+}
+/* Natural content flow remains available when mobile height is insufficient. */
+@media(max-width:699px){
+  .site-header{height:50px;padding:0 16px}
+  .brand{font-size:25px}
+  .top-nav .nav-rsvp{font-size:8px}
+  .hero,.message-section,.countdown-section,.story-section,.verse-section,.details-section,.timeline-section,.dress-section{min-height:100svh}
+  .hero{padding:16px 15px 24px;gap:9px;grid-template-columns:1fr 36%;align-content:center;align-items:center}
+  .hero-copy{padding:0;text-align:center}
+  .hero-topline{font-size:8px;letter-spacing:.15em;gap:5px}
+  .hairline{width:13px}
+  .hero-precursor{font-size:clamp(18px,4.7vw,25px);margin:11px 0 2px;white-space:normal}
+  .hero h1{font-size:clamp(40px,10vw,70px);margin:15px 0 20px;line-height:.85}
+  .hero h1 .hero-and{font-size:clamp(45px,11vw,72px);margin:0}
+  .hero-divider{margin-bottom:8px;gap:7px}
+  .hero-divider span{width:25px}
+  .hero-date{font-size:9px;line-height:1.5;margin-bottom:9px;letter-spacing:.06em}
+  .hero-date span{padding:0 1px}
+  .hero-subtitle{font-size:clamp(15px,3.6vw,19px);line-height:1.15;margin-bottom:13px}
+  .hero .button{min-height:42px;padding:10px 8px;font-size:8px;gap:3px;letter-spacing:.035em}
+  .hero-visual{width:100%;max-width:none}
+  .hero-photo-frame{aspect-ratio:.69}
+  .hero-photo-caption{font-size:14px;margin-top:7px}
+  .hero-decoration{font-size:16px}
+  .hero-decoration-top{right:-8px}.hero-decoration-bottom{left:-5px}
+  .scroll-cue{display:none}
+  .message-section{padding:28px 18px;justify-content:center}
+  .message-section .section-ornament{font-size:29px;margin-bottom:8px}
+  .statement{font-size:clamp(32px,8vw,49px);max-width:540px;margin:13px auto;line-height:1.08}
+  .message-signature{font-size:19px;line-height:1.15}
+  .script-signature{font-size:33px;margin-top:5px}
+  .countdown-section{padding:22px 12px}
+  .countdown-section h2{font-size:clamp(36px,8vw,53px);margin:15px 0 25px}
+  .countdown{gap:5px}
+  .countdown div{min-width:44px}
+  .countdown strong{font-size:clamp(37px,10vw,59px)}
+  .countdown b{font-size:22px}
+  .countdown span{font-size:7px}
+  .countdown-note{margin-top:22px}
+  .story-section{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"copy copy" "photo detail";gap:14px;padding:20px 18px;align-content:center;align-items:start}
+  .story-copy{grid-area:copy;max-width:none;text-align:center}
+  .story-copy h2{font-size:clamp(37px,9vw,54px);line-height:1.01;margin:8px auto 12px;max-width:520px}
+  .story-copy .fine-rule{margin:0 auto 9px}
+  .story-copy p:not(.eyebrow){font-size:clamp(16px,4vw,20px);line-height:1.18;margin:0 auto 8px;max-width:520px}
+  .story-copy .handwritten{font-size:28px}
+  .story-image-first,.story-image-second{width:100%;height:clamp(130px,29svh,275px);max-height:none;aspect-ratio:auto;margin:0;align-self:stretch}
+  .story-image-first{grid-area:photo}.story-image-second{grid-area:detail}
+  .image-number{font-size:7px;left:7px;bottom:5px;letter-spacing:.07em}
+  .verse-section{padding:32px 18px}
+  .verse{font-size:clamp(34px,8vw,53px);margin:14px auto}
+  .details-section{display:flex;flex-direction:column;justify-content:center;padding:15px 12px}
+  .details-section .section-heading{margin:0 auto 13px}
+  .section-heading h2{font-size:clamp(34px,7.8vw,48px);margin:5px 0}
+  .event-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;max-width:none}
+  .event-card{min-height:0;height:auto;padding:9px 4px 12px;overflow-wrap:anywhere}
+  .event-index{font-size:7px;letter-spacing:.03em}
+  .calendar-mark,.event-location-icon,.event-clock-icon{height:70px;margin:4px 0}
+  .calendar-mark{gap:2px}
+  .calendar-mark strong{font-size:51px;line-height:.75;margin:3px 0 8px}
+  .calendar-mark span{font-size:8px;letter-spacing:.02em}
+  .event-location-icon svg,.event-clock-icon svg{width:38px}
+  .event-card h3{font-size:clamp(15px,4vw,23px);line-height:1.05;margin:3px 0 7px}
+  .event-card p{font-size:clamp(12px,3.15vw,17px);line-height:1.13;margin:0 0 10px}
+  .event-card .link-arrow{font-size:8px;letter-spacing:0;line-height:1.2;padding-bottom:3px}
+  .event-card .link-arrow span{font-size:10px;margin-left:1px}
+  .event-pending{font-size:8px;letter-spacing:0;padding:4px}
+  .timeline-section{padding:20px 16px}
+  .timeline-section .section-heading{margin-bottom:12px}
+  .timeline-section .section-heading>p:last-child{font-size:17px;line-height:1.15}
+  .timeline{max-width:470px}
+  .timeline:before{left:15px}
+  .timeline li,.timeline li:nth-child(even){min-height:0;width:100%;margin:0;padding:0 0 16px 44px;text-align:left}
+  .timeline-dot,.timeline li:nth-child(even) .timeline-dot{left:6px;top:-1px}
+  .timeline h3{font-size:26px;margin:0}
+  .timeline p{font-size:16px;line-height:1.1}
+  .dress-section{padding:20px 12px}
+  .dress-inner{display:grid;grid-template-columns:24% 1fr;gap:8px;padding:22px 15px;text-align:left}
+  .dress-illustration svg{width:100%}
+  .dress-inner h2{font-size:clamp(33px,8vw,49px);margin:8px 0}
+  .dress-inner p:not(.eyebrow){font-size:17px;line-height:1.15}
+  .dress-pill{font-size:8px;margin-top:6px;padding:7px}
+  .rsvp-section{padding:20px 12px 60px}
+  .rsvp-panel{padding:22px 18px 28px}
+  .rsvp-monogram{font-size:30px;margin-bottom:5px}
+  .rsvp-panel h2{font-size:clamp(34px,8vw,48px);margin:8px auto}
+  .rsvp-description{font-size:17px;line-height:1.18;margin-bottom:15px}
+  #rsvp-form .form-field{margin-bottom:9px}
+  .form-field input,.form-field select,.form-field textarea{min-height:41px;padding:8px 11px}
+  .form-field textarea{min-height:55px}
+  .attendance-options{grid-template-columns:1fr 1fr;gap:7px}
+  .attendance-option span{font-size:11px;line-height:1.2;min-height:44px;padding:8px}
+  .form-hint{margin:7px 0 10px}
+}
+@media(max-width:360px){.hero{grid-template-columns:1fr 31%}.hero h1{font-size:39px}.event-card p{font-size:11px}.event-card h3{font-size:14px}.event-index{font-size:6px}}
+@media(max-height:600px) and (max-width:699px){.hero{padding:10px 12px}.hero h1{font-size:43px;margin:8px 0}.hero h1 .hero-and{font-size:45px}.story-section{padding:9px 13px;gap:7px}.story-copy h2{font-size:34px}.story-copy p:not(.eyebrow){font-size:15px}.story-image-first,.story-image-second{height:22svh}.details-section{padding:7px 9px}.event-card p{font-size:11px}.timeline li,.timeline li:nth-child(even){padding-bottom:7px}}
