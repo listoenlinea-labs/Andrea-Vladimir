@@ -1,9 +1,7 @@
-// GitHub Pages solo sirve archivos estáticos. La API se publica por separado
-// en un servidor Node.js/Express con acceso a MySQL.
-// Sustituye la cadena vacía por la URL PÚBLICA de esa API, sin barra final.
-// Ejemplo: apiBaseUrl: 'https://bodas-api.tudominio.com'
+// Dominio único para la invitación y la API, compatible también si se decide
+// publicar la carpeta docs/ en GitHub Pages como una segunda dirección.
 window.WEDDING_CONFIG = {
-  apiBaseUrl: '',
+  apiBaseUrl: 'https://invitaciones.listoenlinea.host',
   weddingDate: '2027-11-13T00:00:00-06:00',
   mapsUrl: 'https://maps.app.goo.gl/rVdPkRTac8oYTHdQA'
 };
