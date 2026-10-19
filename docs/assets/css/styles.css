@@ -160,3 +160,155 @@ h2 em{font-family:var(--script);font-weight:400;font-style:normal;color:var(--go
 @media(max-width:560px){.guided-tour{left:16px;right:16px;bottom:14px;width:auto}.tour-content{min-height:60px;padding:9px 9px 9px 14px}.tour-name{font-size:20px}.tour-control{width:32px;height:34px}.intro-footnote{bottom:17px;font-size:8px;letter-spacing:.21em}.intro-filigrana{font-size:115px}.intro-filigrana-left{left:-49px}.intro-filigrana-right{right:-47px}.envelope-letter .letter-overline{font-size:7px}.envelope-letter small{font-size:8px}.envelope-letter>span:not(.letter-rule){font-size:52px}.intro-button{min-width:min(318px,84vw)}}
 @media(max-height:670px){.intro-copy h2{font-size:clamp(30px,4vw,45px)}.intro-copy p:last-child{font-size:25px}.envelope-stage{height:190px;margin:18px 0 22px}.intro-footnote{display:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.js .reveal,.js .story-image.reveal{opacity:1;transform:none}}
+
+/* Full-viewport scenes: the tour lands on an exact scene edge, never on a
+   preceding sliver of a differently colored chapter. Small screens receive
+   additional automatic camera stops for scenes taller than their viewport. */
+.hero,.message-section,.countdown-section,.story-section,.verse-section,.details-section,.timeline-section,.dress-section,.rsvp-section{min-height:100vh;min-height:100svh}
+.message-section,.countdown-section,.verse-section,.timeline-section,.dress-section{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.story-section,.details-section{max-width:none}
+.calendar-mark{gap:5px;justify-content:center}
+.calendar-mark strong{display:block;line-height:.78;margin:7px 0 12px}
+.calendar-mark span{display:block;line-height:1.15;white-space:nowrap}
+.event-card{justify-content:flex-start}
+
+/* Barely-there blush petals, deliberately fewer and slower than confetti. */
+.petal-drift{position:fixed;inset:0;z-index:25;overflow:hidden;pointer-events:none}
+.falling-petal{--x:10%;--duration:26s;--delay:-8s;--size:9px;--drift:50px;position:absolute;left:var(--x);top:-35px;width:var(--size);height:calc(var(--size) * 1.36);border-radius:80% 9% 80% 14%;background:linear-gradient(145deg,#f6dacf,#d5a6a2);opacity:.25;filter:drop-shadow(0 1px 1px #83564a1f);transform-origin:40% 70%;animation:petal-fall var(--duration) linear var(--delay) infinite}
+.falling-petal:nth-child(1){--x:5%;--duration:27s;--delay:-21s;--size:9px;--drift:80px}
+.falling-petal:nth-child(2){--x:17%;--duration:34s;--delay:-9s;--size:7px;--drift:-55px}
+.falling-petal:nth-child(3){--x:30%;--duration:30s;--delay:-24s;--size:11px;--drift:64px}
+.falling-petal:nth-child(4){--x:43%;--duration:37s;--delay:-14s;--size:8px;--drift:-90px}
+.falling-petal:nth-child(5){--x:57%;--duration:32s;--delay:-29s;--size:10px;--drift:76px}
+.falling-petal:nth-child(6){--x:69%;--duration:39s;--delay:-19s;--size:7px;--drift:-48px}
+.falling-petal:nth-child(7){--x:79%;--duration:29s;--delay:-6s;--size:10px;--drift:65px}
+.falling-petal:nth-child(8){--x:90%;--duration:35s;--delay:-26s;--size:8px;--drift:-72px}
+.falling-petal:nth-child(9){--x:24%;--duration:41s;--delay:-36s;--size:6px;--drift:45px}
+.falling-petal:nth-child(10){--x:84%;--duration:42s;--delay:-33s;--size:7px;--drift:-90px}
+@keyframes petal-fall{0%{transform:translate3d(0,-9vh,0) rotate(-35deg)}50%{transform:translate3d(24px,55vh,0) rotate(205deg)}100%{transform:translate3d(var(--drift),115vh,0) rotate(515deg)}}
+@media(max-width:560px){.falling-petal:nth-child(n+7){display:none}}
+
+/* The invitation keeps its original cream/sage palette; dusty blue is used
+   only as a gentle invitation-opening accent. */
+.intro .intro-button{background:linear-gradient(155deg,#92aab8,#718c9d);color:#fffdf9;border-color:#718b9b;outline-color:#a0b3bd;box-shadow:0 8px 24px #526b7930}
+.intro .intro-button:hover{background:#648292;box-shadow:0 11px 28px #526b7942}
+
+/* On a laptop or monitor, each editorial chapter is composed to sit inside
+   the visible scene rather than requiring a second user scroll. */
+@media(min-width:1000px){
+  .hero{max-width:none;min-height:100svh;gap:clamp(12px,2vw,38px);padding:24px clamp(28px,6vw,110px) 36px;grid-template-columns:minmax(0,1fr) minmax(0,.92fr)}
+  .hero-precursor{font-size:clamp(26px,2.5vw,37px);margin:10px 0 0}
+  .hero h1{font-size:clamp(68px,6vw,110px);margin:13px 0 18px;line-height:.72}
+  .hero h1 .hero-and{font-size:clamp(69px,6vw,108px);margin:1px 0 2px}
+  .hero-divider{margin-bottom:11px}
+  .hero-date{font-size:11px;margin-bottom:12px}
+  .hero-subtitle{font-size:clamp(18px,1.5vw,22px);line-height:1.2;margin-bottom:16px}
+  .hero-visual{max-width:510px}
+  .hero-photo-frame{width:min(100%,calc((100svh - 115px) * .78));margin-inline:auto}
+  .hero-photo-caption{margin-top:8px}
+  .hero .scroll-cue{bottom:5px;gap:4px}
+  .hero .scroll-cue span{height:18px}
+
+  .message-section{padding:4svh 24px}
+  .message-section .section-ornament{font-size:35px;margin-bottom:8px}
+  .statement{font-size:clamp(37px,4.2vw,67px);line-height:1.02;max-width:1150px;margin:15px auto}
+  .message-signature{font-size:21px}
+  .script-signature{font-size:38px;margin-top:8px}
+
+  .countdown-section{padding:5svh 25px}
+  .countdown-section h2{font-size:clamp(45px,5.1vw,72px);margin:13px 0 27px}
+  .countdown strong{font-size:clamp(55px,6.7vw,95px)}
+  .countdown-note{margin-top:24px}
+
+  .verse-section{padding:5svh 30px}
+  .verse{max-width:1060px;font-size:clamp(38px,4.6vw,70px);line-height:1.12;margin:16px auto}
+
+  .details-section{display:flex;flex-direction:column;justify-content:center;padding:3svh clamp(32px,6vw,105px)}
+  .details-section .section-heading{margin-bottom:3svh}
+  .section-heading h2{font-size:clamp(44px,4.2vw,66px);margin:11px 0 5px}
+  .section-heading>p:last-child{font-size:20px}
+  .event-grid{width:100%;max-width:1370px;margin:0 auto;gap:18px}
+  .event-card{height:min(53svh,440px);min-height:358px;padding:18px clamp(15px,2.1vw,31px) 24px}
+  .calendar-mark,.event-location-icon,.event-clock-icon{height:123px;margin:8px 0 11px}
+  .calendar-mark strong{font-size:clamp(76px,7vw,100px);line-height:.76;margin:7px 0 13px}
+  .calendar-mark span{font-size:11px;line-height:1.15}
+  .event-location-icon svg,.event-clock-icon svg{width:64px}
+  .event-card h3{font-size:clamp(25px,2.1vw,31px);margin:0 0 9px}
+  .event-card p{font-size:clamp(16px,1.3vw,19px);line-height:1.2;margin:0 auto 12px}
+  .event-card .link-arrow{font-size:9px;padding-bottom:5px}
+  .event-pending{padding:7px 13px}
+
+  .timeline-section{padding:3svh 25px}
+  .timeline-section .section-heading{margin-bottom:2svh}
+  .timeline{width:100%;max-width:680px}
+  .timeline li{min-height:89px;padding-bottom:10px}
+  .timeline li:nth-child(even){padding-bottom:10px}
+  .timeline h3{font-size:30px;margin:2px 0}
+  .timeline p{font-size:17px;line-height:1.2}
+  .timeline-dot{top:0}
+
+  .dress-section{padding:4svh 25px}
+  .dress-inner{width:100%;padding:40px 5%}
+  .dress-inner h2{font-size:clamp(44px,4.2vw,60px);margin:10px 0 12px}
+  .dress-inner p:not(.eyebrow){font-size:20px;line-height:1.3}
+
+  .rsvp-section{display:flex;align-items:center;justify-content:center;padding:3svh 24px}
+  .rsvp-panel{display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);gap:clamp(24px,4vw,58px);width:100%;max-width:1190px;align-items:center;text-align:left;padding:clamp(28px,3svh,40px) clamp(30px,4vw,65px)}
+  .rsvp-intro{align-self:center}
+  .rsvp-monogram{margin-bottom:16px}
+  .rsvp-panel h2{font-size:clamp(45px,4vw,64px);line-height:1;margin:12px 0 16px}
+  .rsvp-description{font-size:clamp(18px,1.4vw,22px);line-height:1.25;margin:0}
+  #rsvp-form .form-field{margin-bottom:8px}
+  .form-field label,.attendance-fieldset legend{margin-bottom:3px;font-size:10px}
+  .form-field input,.form-field select,.form-field textarea{min-height:39px;padding:7px 12px;font-size:13px}
+  .form-field textarea{min-height:58px}
+  .phone-field>span{padding:7px 12px}
+  .attendance-fieldset{margin-bottom:9px}
+  .attendance-option span{min-height:42px;padding:9px 11px}
+  .privacy-check{font-size:10px;line-height:1.25}
+  .form-hint{font-size:10px;margin:5px 0 9px;line-height:1.25}
+  .rsvp-submit{min-height:43px;padding:10px 20px}
+}
+
+/* Wide screens accommodate the image-led three-column story in one frame. */
+@media(min-width:1200px){
+  .story-section{grid-template-columns:minmax(0,1fr) minmax(0,1.03fr) minmax(0,.88fr);gap:clamp(22px,3vw,54px);padding:3svh clamp(30px,5vw,92px)}
+  .story-image-first{height:min(74svh,670px);aspect-ratio:auto}
+  .story-image-second{height:min(54svh,485px);aspect-ratio:auto;margin-top:0}
+  .story-copy h2{font-size:clamp(41px,3.4vw,62px);margin:14px 0 15px}
+  .story-copy p:not(.eyebrow){font-size:clamp(18px,1.45vw,22px);line-height:1.24;margin-bottom:10px}
+  .story-copy .fine-rule{margin-bottom:12px}
+  .story-copy .handwritten{font-size:29px}
+}
+
+@media(min-width:1000px) and (max-height:740px){
+  .hero h1{font-size:clamp(60px,5.4vw,93px);margin:9px 0 12px}
+  .hero h1 .hero-and{font-size:clamp(63px,5.2vw,92px)}
+  .hero-subtitle{font-size:18px}
+  .event-card{min-height:322px}
+  .event-card h3{font-size:25px}
+  .timeline li{min-height:73px}
+  .timeline h3{font-size:27px}
+  .rsvp-panel{padding:18px 33px}
+  .rsvp-panel h2{font-size:45px}
+  .rsvp-monogram{margin-bottom:8px}
+}
+
+@media(max-width:999px){
+  .story-section,.details-section{max-width:100%}
+  .rsvp-panel{display:block;width:100%;max-width:690px;text-align:center}
+  .rsvp-intro{text-align:center}
+  .rsvp-section{display:block}
+  .calendar-mark strong{font-size:88px;line-height:.77;margin:8px 0 14px}
+  .calendar-mark span{line-height:1.2}
+}
+@media(max-width:560px){
+  .message-section .section-ornament{font-size:37px;margin-bottom:13px}
+  .statement{font-size:clamp(33px,9.7vw,42px);line-height:1.07;margin:19px auto}
+  .script-signature{margin-top:10px;font-size:37px}
+  .details-section .section-heading{margin-bottom:30px}
+  .event-card{padding:25px 22px 28px}
+  .timeline-section .section-heading{margin-bottom:36px}
+  .rsvp-section{padding:60px 13px 88px}
+}
+@media(prefers-reduced-motion:reduce){.petal-drift{display:none}}
