@@ -422,3 +422,26 @@ h2 em{font-family:var(--script);font-weight:400;font-style:normal;color:var(--go
 }
 @media(max-width:360px){.hero{grid-template-columns:1fr 31%}.hero h1{font-size:39px}.event-card p{font-size:11px}.event-card h3{font-size:14px}.event-index{font-size:6px}}
 @media(max-height:600px) and (max-width:699px){.hero{padding:10px 12px}.hero h1{font-size:43px;margin:8px 0}.hero h1 .hero-and{font-size:45px}.story-section{padding:9px 13px;gap:7px}.story-copy h2{font-size:34px}.story-copy p:not(.eyebrow){font-size:15px}.story-image-first,.story-image-second{height:22svh}.details-section{padding:7px 9px}.event-card p{font-size:11px}.timeline li,.timeline li:nth-child(even){padding-bottom:7px}}
+
+/* iOS / WhatsApp: keep decorative graphics as thin editorial line art, not
+   colored system emoji. SVGs inherit the surrounding label color. */
+.fine-arrow-wrap{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin-left:6px;font-size:inherit!important}
+.fine-arrow{width:14px;height:14px;display:block;flex:none;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.button .fine-arrow{width:15px;height:15px}
+.link-arrow .fine-arrow-wrap{margin-left:4px!important}
+.link-arrow .fine-arrow{width:12px;height:12px}
+.external-icon{display:inline-flex;vertical-align:middle}
+.external-icon .fine-arrow{width:15px;height:15px}
+.rsvp-decline-icon .fine-arrow{width:13px;height:13px}
+.hero-art-vintage{width:190px;height:190px;font-size:0!important;line-height:0!important;opacity:.35;pointer-events:none;transform:none!important}
+.hero-art-vintage span{display:block;position:absolute;left:50%;top:50%;width:75%;height:1px;background:#c6b49b;transform-origin:left center}
+.hero-art-vintage span:nth-child(1){transform:rotate(-32deg)}
+.hero-art-vintage span:nth-child(2){transform:rotate(0deg)}
+.hero-art-vintage span:nth-child(3){transform:rotate(32deg)}
+@media(max-width:699px){
+ .hero-art-vintage{width:90px!important;height:90px!important;left:-50px!important;top:38%!important;opacity:.2!important}
+ .hero-art-vintage span{width:65%}
+ .button .fine-arrow{width:13px;height:13px}
+ .link-arrow .fine-arrow-wrap{margin-left:2px!important}
+ .link-arrow .fine-arrow{width:11px;height:11px}
+}

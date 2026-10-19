@@ -53,7 +53,7 @@
         <div class="wax-seal">A<span>&amp;</span>V</div>
       </div>
     </div>
-    <button id="open-invitation" class="button button-dark intro-button" type="button">Abrir nuestra invitación <span aria-hidden="true">✧</span></button>
+    <button id="open-invitation" class="button button-dark intro-button" type="button">Abrir nuestra invitación <span aria-hidden="true" class="fine-sparkle">✧</span></button>
     <button id="skip-intro" class="text-button" type="button">Entrar sin animación</button>
     <p class="intro-footnote" aria-hidden="true">UN VIAJE A TRAVÉS DE NUESTRA HISTORIA</p>
   </div>
@@ -63,13 +63,13 @@
     <nav class="top-nav" aria-label="Navegación principal">
       <a href="#historia">Nuestra historia</a>
       <a href="#detalles">El gran día</a>
-      <a href="#confirmar" class="nav-rsvp">Confirmar asistencia <span aria-hidden="true">↗</span></a>
+      <a href="#confirmar" class="nav-rsvp">Confirmar asistencia <span class="fine-arrow-wrap" aria-hidden="true"><svg class="fine-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
     </nav>
   </header>
 
   <main>
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-art hero-art-left" aria-hidden="true">✳</div>
+      <div class="hero-art hero-art-left hero-art-vintage" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="hero-copy">
         <div class="hero-topline"><span class="hairline"></span> NOS CASAMOS <span class="hairline"></span></div>
         <p class="hero-precursor">El inicio de nuestro para siempre</p>
@@ -77,7 +77,7 @@
         <div class="hero-divider" aria-hidden="true"><span></span><i>✦</i><span></span></div>
         <p class="hero-date">Sábado <span>13</span> Noviembre <span>2027</span></p>
         <p class="hero-subtitle">Con inmensa alegría te invitamos a ser parte de uno de los días más bonitos de nuestra vida.</p>
-        <a class="button button-dark" href="#detalles">Descubre nuestra celebración <span aria-hidden="true">↘</span></a>
+        <a class="button button-dark" href="#detalles">Descubre nuestra celebración <span class="fine-arrow-wrap" aria-hidden="true"><svg class="fine-arrow fine-arrow-down" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 7L17 17M9 17h8V9"/></svg></span></a>
       </div>
       <div class="hero-visual">
         <div class="hero-photo-frame">
@@ -85,8 +85,8 @@
           <div class="photo-shine" aria-hidden="true"></div>
         </div>
         <span class="hero-photo-caption">A lifetime of us · 2027</span>
-        <span class="hero-decoration hero-decoration-top" aria-hidden="true">✦</span>
-        <span class="hero-decoration hero-decoration-bottom" aria-hidden="true">✦</span>
+        <span class="hero-decoration hero-decoration-top" aria-hidden="true">✧</span>
+        <span class="hero-decoration hero-decoration-bottom" aria-hidden="true">✧</span>
       </div>
       <a href="#mensaje" class="scroll-cue" aria-label="Deslizar a la siguiente sección"><span></span> DESLIZA PARA DESCUBRIR</a>
     </section>
@@ -151,14 +151,14 @@
           <div class="calendar-mark"><span>NOVIEMBRE</span><strong>13</strong><span>SÁBADO · 2027</span></div>
           <h3>El gran día</h3>
           <p>Nos encantaría que apartaras esta fecha tan especial para nosotros.</p>
-          <button class="link-arrow" id="download-calendar" type="button">Agregar a mi calendario <span aria-hidden="true">↗</span></button>
+          <button class="link-arrow" id="download-calendar" type="button">Agregar a mi calendario <span class="fine-arrow-wrap" aria-hidden="true"><svg class="fine-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17L17 7M9 7h8v8"/></svg></span></button>
         </article>
         <article class="event-card reveal">
           <span class="event-index">02 / LA UBICACIÓN</span>
           <div class="event-location-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="M32 56S14 40.5 14 27a18 18 0 0 1 36 0c0 13.5-18 29-18 29Z"/><circle cx="32" cy="27" r="6"/></svg></div>
-          <h3><a href="https://maps.app.goo.gl/rVdPkRTac8oYTHdQA" target="_blank" rel="noopener noreferrer">San Rafael Eventos <span class="external-icon" aria-hidden="true">↗</span></a></h3>
+          <h3><a href="https://maps.app.goo.gl/rVdPkRTac8oYTHdQA" target="_blank" rel="noopener noreferrer">San Rafael Eventos <span class="external-icon" aria-hidden="true"><svg class="fine-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a></h3>
           <p>Será un honor recibirte para compartir un día lleno de amor y alegría.</p>
-          <a class="link-arrow" href="https://maps.app.goo.gl/rVdPkRTac8oYTHdQA" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps <span aria-hidden="true">↗</span></a>
+          <a class="link-arrow" href="https://maps.app.goo.gl/rVdPkRTac8oYTHdQA" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps <span class="fine-arrow-wrap" aria-hidden="true"><svg class="fine-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
         </article>
         <article class="event-card reveal">
           <span class="event-index">03 / EL HORARIO</span>
@@ -213,14 +213,14 @@
         <form id="rsvp-form" novalidate>
           <div class="form-field"><label for="guest-name">Tu nombre completo <span>*</span></label><input id="guest-name" name="nombre" type="text" autocomplete="name" required maxlength="120" placeholder="Nombre y apellido"></div>
           <div class="form-field"><label for="guest-phone">Tu WhatsApp <span>*</span></label><div class="phone-field"><span>+52</span><input id="guest-phone" name="telefono" type="tel" inputmode="tel" autocomplete="tel-national" required maxlength="16" placeholder="10 dígitos"></div></div>
-          <fieldset class="attendance-fieldset"><legend>¿Podrás acompañarnos? <span>*</span></legend><div class="attendance-options"><label class="attendance-option"><input type="radio" name="asistencia" value="si" checked><span>Sí, ¡ahí estaré! <i>♡</i></span></label><label class="attendance-option"><input type="radio" name="asistencia" value="no"><span>No podré asistir <i>↗</i></span></label></div></fieldset>
+          <fieldset class="attendance-fieldset"><legend>¿Podrás acompañarnos? <span>*</span></legend><div class="attendance-options"><label class="attendance-option"><input type="radio" name="asistencia" value="si" checked><span>Sí, ¡ahí estaré! <i>♡</i></span></label><label class="attendance-option"><input type="radio" name="asistencia" value="no"><span>No podré asistir <i class="rsvp-decline-icon"><svg class="fine-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17L17 7M9 7h8v8"/></svg></i></span></label></div></fieldset>
           
           <div class="form-field"><label for="guest-message">Un mensaje para nosotros <small>(opcional)</small></label><textarea id="guest-message" name="mensaje" maxlength="500" rows="3" placeholder="Nos encantará leerte..."></textarea></div>
           <div class="honeypot" aria-hidden="true"><label for="guest-website">Sitio web</label><input id="guest-website" name="website" tabindex="-1" autocomplete="off"></div>
           <label class="privacy-check"><input id="privacy-consent" type="checkbox" required> <span>Acepto compartir mis datos únicamente para organizar esta celebración y gestionar mi confirmación.</span></label>
           <p class="form-hint">Si cambias de opinión, podrás enviar una nueva respuesta con el mismo teléfono y reemplazará la anterior.</p>
           <div id="form-status" class="form-status" role="status" aria-live="polite" hidden></div>
-          <button id="submit-rsvp" class="button button-dark rsvp-submit" type="submit">Enviar mi confirmación <span aria-hidden="true">↗</span></button>
+          <button id="submit-rsvp" class="button button-dark rsvp-submit" type="submit">Enviar mi confirmación <span class="fine-arrow-wrap" aria-hidden="true"><svg class="fine-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17L17 7M9 7h8v8"/></svg></span></button>
         </form>
       </div>
     </section>

@@ -319,7 +319,7 @@
     } finally {
       window.clearTimeout(timer);
       submitButton.disabled = false;
-      submitButton.innerHTML = 'Enviar mi confirmación <span aria-hidden="true">↗</span>';
+      submitButton.innerHTML = 'Enviar mi confirmación <span class="fine-arrow-wrap" aria-hidden="true"><svg class="fine-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17L17 7M9 7h8v8"/></svg></span>';
     }
   });
 })();
