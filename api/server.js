@@ -4,6 +4,12 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { rateLimit } from 'express-rate-limit';
 import mysql from 'mysql2/promise';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Al desplegar desde la raíz del repositorio, Hostinger incluye tanto
+// api/ (Node.js) como docs/ (la invitación). Nunca exponer database/ ni .env.
+const docsDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../docs');
 
 const requiredEnv = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
 const missing = requiredEnv.filter((name) => !process.env[name]);
@@ -13,6 +19,7 @@ if (missing.length) {
 }
 
 const port = Number(process.env.PORT || 3000);
+const publicSiteOrigin = 'https://invitaciones.listoenlinea.host';
 const allowedOrigins = String(process.env.FRONTEND_ORIGINS || '')
   .split(',')
   .map((value) => value.trim().replace(/\/$/, ''))
@@ -38,10 +45,23 @@ const pool = mysql.createPool({
 const app = express();
 app.disable('x-powered-by');
 app.set('trust proxy', 1); // Hostinger/reverse proxy: configurar al número real de proxies si difiere.
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+      imgSrc: ["'self'", 'data:'],
+      connectSrc: ["'self'", 'https://invitaciones.listoenlinea.host'],
+      objectSrc: ["'none'"],
+      frameAncestors: ["'none'"]
+    }
+  }
+}));
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    if (!origin || origin === publicSiteOrigin || allowedOrigins.includes(origin)) return callback(null, true);
     return callback(new Error('Origen no autorizado'));
   },
   methods: ['GET', 'POST'],
@@ -122,6 +142,12 @@ app.post('/api/rsvp', submissionLimiter, async (req, res) => {
     return res.status(500).json({ ok: false, message: 'No fue posible guardar la confirmación. Inténtalo en unos minutos.' });
   }
 });
+
+// Mostrar la invitación en https://invitaciones.listoenlinea.host/.
+// Las rutas /api anteriores conservan prioridad y no se exponen los archivos
+// privados del proyecto. Las rutas de assets coinciden con docs/index.html.
+app.get('/', (_req, res) => res.sendFile(path.join(docsDirectory, 'index.html')));
+app.use(express.static(docsDirectory, { index: false, maxAge: '1h', redirect: false }));
 
 app.use((error, _req, res, _next) => {
   console.error('Error API:', error.message);
